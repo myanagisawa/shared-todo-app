@@ -57,6 +57,7 @@ app.get('/health', (req, res) => {
 
 // Import routes
 import authRoutes from './routes/auth';
+import noteRoutes from './routes/notes';
 
 // API routes
 app.get('/api/v1', (req, res) => {
@@ -71,6 +72,9 @@ app.get('/api/v1', (req, res) => {
 
 // Auth routes
 app.use('/api/v1/auth', authRoutes);
+
+// Note routes
+app.use('/api/v1/notes', noteRoutes);
 
 // Error handling middleware
 app.use(notFoundHandler);
