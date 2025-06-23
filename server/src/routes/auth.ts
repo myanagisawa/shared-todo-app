@@ -231,19 +231,78 @@ router.post('/logout', async (req: Request, res: Response) => {
 
 /**
  * GET /api/v1/auth/me
- * Get current user profile
+ * Get current user profile (requires authentication)
  */
 router.get('/me', async (req: Request, res: Response) => {
   try {
-    // This endpoint will be used with authenticateToken middleware
-    // to get current user info
-    res.json({
-      success: true,
-      data: {
-        message: 'Authentication endpoint - requires middleware implementation',
+    // Extract token from Authorization header
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+      return res.status(401).json({
+        success: false,
+        error: {
+          code: 'AUTHORIZATION_REQUIRED',
+          message: 'Authorization header is required',
+        },
+      });
+    }
+
+    const token = authHeader.split(' ')[1];
+    if (!token) {
+      return res.status(401).json({
+        success: false,
+        error: {
+          code: 'TOKEN_REQUIRED',
+          message: 'Bearer token is required',
+        },
+      });
+    }
+
+    // Verify token
+    const decoded = AuthService.verifyToken(token);
+
+    // Get user from database
+    const user = await prisma.user.findUnique({
+      where: { id: decoded.id },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        avatar: true,
+        createdAt: true,
       },
     });
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        error: {
+          code: 'USER_NOT_FOUND',
+          message: 'User not found',
+        },
+      });
+    }
+
+    logger.info('User profile retrieved', {
+      userId: user.id,
+      email: user.email,
+    });
+
+    res.json({
+      success: true,
+      data: user,
+    });
   } catch (error) {
+    if (error instanceof AuthenticationError) {
+      return res.status(401).json({
+        success: false,
+        error: {
+          code: 'AUTHENTICATION_ERROR',
+          message: error.message,
+        },
+      });
+    }
+
     logger.error('Get user profile failed', {
       error: error instanceof Error ? error.message : 'Unknown error',
     });

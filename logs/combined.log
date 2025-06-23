@@ -2,3 +2,10 @@
 {"environment":"development","level":"info","message":"Database info Starting a postgresql pool with 17 connections.","service":"shared-todo-api","target":"quaint::pooled","timestamp":"2025-06-23 08:06:19"}
 {"environment":"development","level":"info","message":"Database connection test successful","service":"shared-todo-api","timestamp":"2025-06-23 08:06:19"}
 {"environment":"development","level":"info","message":"🚀 Server running on port 3001","port":"3001","service":"shared-todo-api","timestamp":"2025-06-23 08:06:19"}
+{"email":"test@example.com","environment":"development","level":"info","message":"User registered successfully","service":"shared-todo-api","timestamp":"2025-06-23 08:16:01","userId":"559ba14e-d98d-4e2b-bb76-c387b295599d"}
+{"environment":"development","level":"info","message":"SIGTERM received, shutting down gracefully","service":"shared-todo-api","timestamp":"2025-06-23 08:16:30"}
+{"environment":"development","level":"info","message":"Database connection closed","service":"shared-todo-api","timestamp":"2025-06-23 08:16:30"}
+{"environment":"development","level":"info","message":"Database info Starting a postgresql pool with 17 connections.","service":"shared-todo-api","target":"quaint::pooled","timestamp":"2025-06-23 08:16:32"}
+{"environment":"development","level":"info","message":"Database connection test successful","service":"shared-todo-api","timestamp":"2025-06-23 08:16:32"}
+{"environment":"development","level":"info","message":"🚀 Server running on port 3001","port":"3001","service":"shared-todo-api","timestamp":"2025-06-23 08:16:32"}
+{"email":"test@example.com","environment":"development","level":"info","message":"User profile retrieved","service":"shared-todo-api","timestamp":"2025-06-23 08:16:59","userId":"559ba14e-d98d-4e2b-bb76-c387b295599d"}
