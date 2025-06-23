@@ -58,6 +58,8 @@ app.get('/health', (req, res) => {
 // Import routes
 import authRoutes from './routes/auth';
 import noteRoutes from './routes/notes';
+import invitationRoutes from './routes/invitations';
+import taskRoutes from './routes/tasks';
 
 // API routes
 app.get('/api/v1', (req, res) => {
@@ -75,6 +77,12 @@ app.use('/api/v1/auth', authRoutes);
 
 // Note routes
 app.use('/api/v1/notes', noteRoutes);
+
+// Invitation routes
+app.use('/api/v1/invitations', invitationRoutes);
+
+// Task routes
+app.use('/api/v1/tasks', taskRoutes);
 
 // Error handling middleware
 app.use(notFoundHandler);

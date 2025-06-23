@@ -56,6 +56,18 @@ export const updateNoteSchema = z.object({
     .optional(),
 });
 
+// Note sharing validation schemas
+export const acceptInvitationSchema = z.object({
+  token: z
+    .string()
+    .min(1, 'Token is required'),
+});
+
+export const updateNoteUserRoleSchema = z.object({
+  role: z
+    .enum(['viewer', 'editor', 'admin']),
+});
+
 // Task validation schemas
 export const createTaskSchema = z.object({
   title: z
@@ -175,7 +187,7 @@ export const ALLOWED_FILE_TYPES = [
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
 ];
 
-export function validateFileUpload(file: Express.Multer.File): boolean {
+export function validateFileUpload(file: any): boolean {
   return (
     file.size <= MAX_FILE_SIZE &&
     ALLOWED_FILE_TYPES.includes(file.mimetype)
