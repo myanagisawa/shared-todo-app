@@ -3,11 +3,13 @@ FROM node:18-alpine
 # Set working directory
 WORKDIR /app
 
-# Install system dependencies
+# Install system dependencies including OpenSSL
 RUN apk add --no-cache \
     python3 \
     make \
     g++ \
+    openssl \
+    openssl-dev \
     postgresql-client
 
 # Copy package files

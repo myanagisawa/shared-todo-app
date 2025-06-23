@@ -114,29 +114,29 @@ model File {
   size         Int
   url          String
   noteId       String?
-  uploadedBy   String
+  uploadedById String
   createdAt    DateTime @default(now())
 
   // Relations
   note       Note? @relation(fields: [noteId], references: [id], onDelete: Cascade)
-  uploadedBy User  @relation(fields: [uploadedBy], references: [id], onDelete: Cascade)
+  uploadedBy User  @relation(fields: [uploadedById], references: [id], onDelete: Cascade)
 
   @@map("files")
 }
 
 model Invitation {
-  id        String   @id @default(uuid())
-  email     String
-  noteId    String
-  invitedBy String
-  role      NoteRole @default(viewer)
-  token     String   @unique
-  expiresAt DateTime
-  createdAt DateTime @default(now())
+  id          String   @id @default(uuid())
+  email       String
+  noteId      String
+  invitedById String
+  role        NoteRole @default(viewer)
+  token       String   @unique
+  expiresAt   DateTime
+  createdAt   DateTime @default(now())
 
   // Relations
   note      Note @relation(fields: [noteId], references: [id], onDelete: Cascade)
-  invitedBy User @relation("InvitedBy", fields: [invitedBy], references: [id], onDelete: Cascade)
+  invitedBy User @relation("InvitedBy", fields: [invitedById], references: [id], onDelete: Cascade)
 
   @@map("invitations")
 }

@@ -55,7 +55,10 @@ app.get('/health', (req, res) => {
   });
 });
 
-// API routes will be added here
+// Import routes
+import authRoutes from './routes/auth';
+
+// API routes
 app.get('/api/v1', (req, res) => {
   res.json({
     success: true,
@@ -65,6 +68,9 @@ app.get('/api/v1', (req, res) => {
     },
   });
 });
+
+// Auth routes
+app.use('/api/v1/auth', authRoutes);
 
 // Error handling middleware
 app.use(notFoundHandler);
