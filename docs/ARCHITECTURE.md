@@ -1,6 +1,33 @@
-# システムアーキテクチャ
+# Shared Todo App - Architecture Documentation
 
-## 全体構成
+## Overview
+The Shared Todo App is a collaborative task management platform built with a modern web stack featuring a React frontend, Node.js backend with PostgreSQL database, and comprehensive sharing capabilities.
+
+## Current Implementation Status
+
+### ✅ Completed Features
+- **Authentication System**: JWT-based auth with secure token handling
+- **Note Management**: Full CRUD operations with rich text support
+- **Note Sharing**: Role-based collaboration (viewer/editor/admin)
+- **Invitation System**: Email-based invitations with token validation
+- **Task Management**: Status tracking, priority levels, assignment
+- **User Interface**: Responsive design with Tailwind CSS
+- **Error Handling**: Comprehensive error boundaries and user feedback
+- **API Documentation**: Complete REST API specification
+
+### 🚧 In Progress
+- Task creation and editing forms
+- Task-Note integration
+- Real-time updates via WebSocket
+
+### 📋 Planned Features
+- File attachments
+- Advanced search and filtering
+- Dark mode support
+- Offline capabilities (PWA)
+- Mobile app (React Native)
+
+## System Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────┐

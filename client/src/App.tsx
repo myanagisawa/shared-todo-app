@@ -3,6 +3,7 @@ import { useAuthStore } from './stores/authStore';
 import { AuthPage } from './pages/AuthPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { ProtectedRoute } from './components/ProtectedRoute';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import './App.css';
 
 function App() {
@@ -14,15 +15,17 @@ function App() {
   }, [initialize]);
 
   return (
-    <div className="App">
-      {isAuthenticated ? (
-        <ProtectedRoute fallback={<AuthPage />}>
-          <DashboardPage />
-        </ProtectedRoute>
-      ) : (
-        <AuthPage />
-      )}
-    </div>
+    <ErrorBoundary>
+      <div className="App min-h-screen bg-gray-50">
+        {isAuthenticated ? (
+          <ProtectedRoute fallback={<AuthPage />}>
+            <DashboardPage />
+          </ProtectedRoute>
+        ) : (
+          <AuthPage />
+        )}
+      </div>
+    </ErrorBoundary>
   );
 }
 
