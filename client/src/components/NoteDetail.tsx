@@ -32,6 +32,24 @@ export const NoteDetail: React.FC<NoteDetailProps> = ({ note, onBack, onUpdate, 
   const canInvite = note.authorId === user?.id || 
     note.noteUsers?.some(nu => nu.userId === user?.id && nu.role === 'admin');
 
+  // Debug information
+  console.log('📝 NoteDetail - Permission check:', {
+    noteId: note.id,
+    noteTitle: note.title,
+    currentUserId: user?.id,
+    currentUserEmail: user?.email,
+    noteAuthorId: note.authorId,
+    isAuthor: note.authorId === user?.id,
+    noteUsers: note.noteUsers,
+    userInNoteUsers: note.noteUsers?.find(nu => nu.userId === user?.id),
+    userRole: note.noteUsers?.find(nu => nu.userId === user?.id)?.role || 'none',
+    permissions: {
+      canEdit,
+      canDelete,
+      canInvite
+    }
+  });
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -166,6 +184,14 @@ export const NoteDetail: React.FC<NoteDetailProps> = ({ note, onBack, onUpdate, 
           </div>
           
           <div className="flex items-center space-x-2">
+            {/* Debug info display */}
+            <div className="text-xs bg-yellow-100 p-1 rounded">
+              User: {user?.email?.split('@')[0]} | 
+              Author: {note.authorId === user?.id ? 'YES' : 'NO'} | 
+              Role: {note.noteUsers?.find(nu => nu.userId === user?.id)?.role || 'none'} | 
+              CanInvite: {canInvite ? 'YES' : 'NO'}
+            </div>
+            
             {isEditing ? (
               <>
                 <button

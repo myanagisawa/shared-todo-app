@@ -17,6 +17,8 @@ export const InviteUserForm: React.FC<InviteUserFormProps> = ({ noteId, onSucces
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
+  console.log('✉️ InviteUserForm - Rendered for noteId:', noteId);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({

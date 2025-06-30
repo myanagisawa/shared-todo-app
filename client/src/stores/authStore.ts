@@ -95,12 +95,15 @@ export const useAuthStore = create<AuthStore>()(
 
       initialize: () => {
         const token = localStorage.getItem('auth_token');
+        console.log('Auth initialize - token:', token);
         
         if (token) {
           // Verify token is still valid by making a request
           authApi.getCurrentUser()
             .then(response => {
+              console.log('Auth initialize - getCurrentUser response:', response);
               if (response.success && response.data) {
+                console.log('Auth initialize - setting user:', response.data);
                 set({
                   user: response.data,
                   token,
@@ -116,7 +119,8 @@ export const useAuthStore = create<AuthStore>()(
                 });
               }
             })
-            .catch(() => {
+            .catch((error) => {
+              console.log('Auth initialize - error:', error);
               // Token is invalid, clear it
               localStorage.removeItem('auth_token');
               set({

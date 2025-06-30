@@ -10,6 +10,15 @@ export const DashboardPage: React.FC = () => {
   const [selectedNote, setSelectedNote] = useState<Note | null>(null);
   const [showCreateForm, setShowCreateForm] = useState(false);
 
+  // Debug current user info
+  console.log('🏠 Dashboard - Current user:', {
+    user,
+    isAuthenticated: !!user,
+    userId: user?.id,
+    userEmail: user?.email,
+    userName: user?.name
+  });
+
   const handleLogout = () => {
     logout();
   };

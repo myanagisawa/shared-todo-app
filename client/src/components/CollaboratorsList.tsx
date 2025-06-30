@@ -16,6 +16,15 @@ export const CollaboratorsList: React.FC<CollaboratorsListProps> = ({ note, onUp
   const canManageUsers = note.authorId === user?.id || 
     note.noteUsers?.some(nu => nu.userId === user?.id && nu.role === 'admin');
 
+  console.log('👥 CollaboratorsList - Rendered:', {
+    noteId: note.id,
+    noteTitle: note.title,
+    currentUser: user?.id,
+    canManageUsers,
+    collaborators: note.noteUsers,
+    noteAuthor: note.authorId
+  });
+
   const handleRoleChange = async (userId: string, newRole: 'viewer' | 'editor' | 'admin') => {
     try {
       setLoading(userId);

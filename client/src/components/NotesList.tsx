@@ -22,6 +22,18 @@ export const NotesList: React.FC<NotesListProps> = ({ onNoteSelect, onCreateNew 
       const response = await noteApi.getNotes(pageNum, 10);
       
       if (response.success && response.data) {
+        console.log('📋 NotesList - Loaded notes:', {
+          currentUser: user,
+          notesCount: response.data.notes.length,
+          notes: response.data.notes.map(note => ({
+            id: note.id,
+            title: note.title,
+            authorId: note.authorId,
+            isAuthor: note.authorId === user?.id,
+            collaborators: note.noteUsers,
+            userRole: note.noteUsers?.find(nu => nu.userId === user?.id)?.role || 'none'
+          }))
+        });
         setNotes(response.data.notes);
         setTotalPages(response.data.pagination.totalPages);
         setPage(pageNum);
