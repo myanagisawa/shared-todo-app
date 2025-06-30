@@ -1,11 +1,11 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { AuthStore, LoginCredentials, RegisterData, User } from '../types/auth';
+import { AuthStore, LoginCredentials, RegisterData } from '../types/auth';
 import { authApi } from '../services/authApi';
 
 export const useAuthStore = create<AuthStore>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       user: null,
       token: null,
       isAuthenticated: false,

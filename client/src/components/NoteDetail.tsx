@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Note, UpdateNoteData } from '../types/note';
 import { noteApi } from '../services/noteApi';
 import { useAuthStore } from '../stores/authStore';
+import { InviteUserForm } from './InviteUserForm';
+import { CollaboratorsList } from './CollaboratorsList';
 
 interface NoteDetailProps {
   note: Note;
@@ -12,6 +14,8 @@ interface NoteDetailProps {
 
 export const NoteDetail: React.FC<NoteDetailProps> = ({ note, onBack, onUpdate, onDelete }) => {
   const [isEditing, setIsEditing] = useState(false);
+  const [showInviteForm, setShowInviteForm] = useState(false);
+  const [showCollaborators, setShowCollaborators] = useState(false);
   const [formData, setFormData] = useState<UpdateNoteData>({
     title: note.title,
     content: note.content,
@@ -24,6 +28,9 @@ export const NoteDetail: React.FC<NoteDetailProps> = ({ note, onBack, onUpdate, 
     note.noteUsers?.some(nu => nu.userId === user?.id && (nu.role === 'editor' || nu.role === 'admin'));
   
   const canDelete = note.authorId === user?.id;
+  
+  const canInvite = note.authorId === user?.id || 
+    note.noteUsers?.some(nu => nu.userId === user?.id && nu.role === 'admin');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -187,6 +194,27 @@ export const NoteDetail: React.FC<NoteDetailProps> = ({ note, onBack, onUpdate, 
                     Edit
                   </button>
                 )}
+                {canInvite && (
+                  <button
+                    onClick={() => setShowInviteForm(true)}
+                    className="px-3 py-1 text-sm text-blue-700 bg-blue-50 border border-blue-300 rounded-md hover:bg-blue-100"
+                    disabled={loading}
+                  >
+                    Invite
+                  </button>
+                )}
+                <button
+                  onClick={() => setShowCollaborators(!showCollaborators)}
+                  className="px-3 py-1 text-sm text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+                  disabled={loading}
+                >
+                  {showCollaborators ? 'Hide' : 'Show'} Collaborators
+                  {note.noteUsers && note.noteUsers.length > 0 && (
+                    <span className="ml-1 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-blue-600 bg-blue-100 rounded-full">
+                      {note.noteUsers.length}
+                    </span>
+                  )}
+                </button>
                 {canDelete && (
                   <button
                     onClick={handleDelete}
@@ -241,32 +269,27 @@ export const NoteDetail: React.FC<NoteDetailProps> = ({ note, onBack, onUpdate, 
         )}
       </div>
 
-      {/* Collaborators */}
-      {note.noteUsers && note.noteUsers.length > 0 && (
+      {/* Invite User Form */}
+      {showInviteForm && (
         <div className="px-6 py-4 border-t border-gray-200">
-          <h3 className="text-sm font-medium text-gray-900 mb-3">Collaborators</h3>
-          <div className="space-y-2">
-            {note.noteUsers.map((noteUser) => (
-              <div key={noteUser.id} className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <div className="flex-shrink-0">
-                    <div className="h-8 w-8 bg-gray-200 rounded-full flex items-center justify-center">
-                      <span className="text-sm font-medium text-gray-700">
-                        {noteUser.user.name.charAt(0).toUpperCase()}
-                      </span>
-                    </div>
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-gray-900">{noteUser.user.name}</p>
-                    <p className="text-sm text-gray-500">{noteUser.user.email}</p>
-                  </div>
-                </div>
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 capitalize">
-                  {noteUser.role}
-                </span>
-              </div>
-            ))}
-          </div>
+          <InviteUserForm 
+            noteId={note.id}
+            onSuccess={() => {
+              setShowInviteForm(false);
+              // Refresh note data could be implemented here
+            }}
+            onCancel={() => setShowInviteForm(false)}
+          />
+        </div>
+      )}
+
+      {/* Collaborators */}
+      {showCollaborators && (
+        <div className="px-6 py-4 border-t border-gray-200">
+          <CollaboratorsList 
+            note={note}
+            onUpdate={onUpdate}
+          />
         </div>
       )}
     </div>
